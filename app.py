@@ -102,6 +102,20 @@ def add_user_feedback(username):
     else:
         return render_template('feedback_form.html', form = form)
 
+@app.route('/users/<username>/delete',methods=["POST"])
+def delete_user(username):
+    """delete a user account and associated feedback"""
+    user = User.query.get_or_404(username)
+    if "username" not in session or session["username"] != user.username:
+        raise Unauthorized()
+    session.pop("username")
+    db.session.delete(user)
+    db.session.commit()
+    return redirect('/')
+
+
+
+
 @app.route('/feedback/<int:feedback_id>/update', methods=["GET","POST"])
 def edit_user_feedback(feedback_id):
     """Show edit user feedback form and process"""
