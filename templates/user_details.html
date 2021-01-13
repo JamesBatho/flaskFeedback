@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% block Title %} {{ user.username}} Details {%
+endblock %} {% block Content %}
+<div class="container">
+  <h1 class="display-2">{{user.username}} Details</h1>
+
+  <p><b> Email: </b> {{user.email}}</p>
+  <p><b> First Name: </b> {{user.first_name}}</p>
+  <p><b> Last Name: </b> {{user.last_name}}</p>
+
+  {% if user.feedback %}
+  <h3 class="display-3">Feedback Given:</h3>
+  <ul>
+    {% for post in user.feedback %}
+    <li>
+      {{post.title}}
+      <small>{{post.content}}</small>
+    </li>
+
+    <a href="/feedback/{{post.id}}/update" class="btn btn-info btn-sm">
+      Edit
+    </a>
+    <form action="/feedback/{{post.id}}/delete" method="POST">
+      {{form.hidden_tag() }}
+      <button class="btn btn-sm btn-danger">Delete Post</button>
+    </form>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <a class="btn btn-success" href="/users/{{user.username}}/feedback/add">
+    Add Feedback</a
+  >
+
+  <form action="/users/{{user.username}}/delete" method="POST">
+    {{form.hidden_tag() }}
+    <button class="btn btn-sm btn-danger">Delete User</button>
+  </form>
+
+  <a href="/logout" class="btn btn-info"> Logout </a>
+</div>
+{% endblock %}
